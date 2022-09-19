@@ -18,7 +18,7 @@ set(SOURCE_FILES src/main.cpp
                  src/shader.cpp
                  src/texture.cpp
                  src/resource_manager.cpp
-                 src/camera.cpp
+                 src/orbit_camera.cpp
                  libs/glad/src/glad.c
                  libs/imgui/imgui.cpp
                  libs/imgui/imgui_demo.cpp

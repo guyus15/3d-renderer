@@ -1,4 +1,5 @@
 #include "resource_manager.h"
+#include "orbit_camera.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -193,24 +194,42 @@ int main()
     glm::mat4 view{1.0f};
     glm::mat4 projection{1.0f};
 
-    model = glm::rotate(model, glm::radians(45.0f), glm::vec3{1.0f, 1.0f, 0.0f});
+    glm::vec3 camera_target{0.0f, 0.0f, 0.0f};
 
-    view = glm::translate(view, glm::vec3{0.0f, 0.0f, -5.0f});
-
-    projection = glm::perspective(45.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
+    OrbitCamera camera{camera_target, 5.0f};
 
     while (!glfwWindowShouldClose(window))
     {
-        static float rot_x = 0.0f, rot_y = 0.0f, rot_z = 0.0f;
+        static float target[3], pitch = 0.0f, yaw = 0.0f, radius = 3.0f;
+        static bool wireframe, orthographic;
 
         // Input
         processInput(window);
 
-        model = glm::rotate(model, glm::radians((float)sin((float)glfwGetTime())), glm::vec3{1.0f, 1.0f, 1.0f});
+        model = glm::rotate(model, glm::radians(0.0f), glm::vec3{1.0f, 1.0f, 1.0f});
 
         shader.set_mat4("model", model);
         shader.set_mat4("view", view);
         shader.set_mat4("projection", projection);
+
+        // Transformations
+
+        camera.set_target(glm::vec3{target[0], target[1], target[2]});
+        camera.set_pitch(pitch);
+        camera.set_yaw(yaw);
+        camera.set_radius(radius);
+
+        view = camera.get_view_matrix();
+
+        float aspect_ratio = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
+
+        if (orthographic)
+        {
+            projection = glm::ortho(-aspect_ratio, aspect_ratio, -1.0f, 1.0f, 0.1f, 100.0f);
+        } else
+        {
+            projection = glm::perspective(45.0f, aspect_ratio, 0.1f, 100.0f);
+        }
 
         // Rendering
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
@@ -225,21 +244,39 @@ int main()
 
         ImGui::Begin("Camera Controls");
 
-        ImGui::SliderFloat("Rotation X", &rot_x, 0.0f, 1.0f);
-        ImGui::SliderFloat("Rotation Y", &rot_y, 0.0f, 1.0f);
-        ImGui::SliderFloat("Rotation Z", &rot_z, 0.0f, 1.0f);
+        ImGui::InputFloat3("Target", target);
+
+        ImGui::SliderFloat("Yaw", &yaw, 0.0f, 360.0f);
+        ImGui::SliderFloat("Pitch", &pitch, -89.9f, 89.9f);
+        ImGui::SliderFloat("Radius", &radius, 1.0f, 10.0f);
+
+        ImGui::Checkbox("Orthographic", &orthographic);
+
+        ImGui::End();
+
+        ImGui::Begin("Rendering Options");
+
+        ImGui::Checkbox("Wireframe Mode", &wireframe);
 
         ImGui::End();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+        if (wireframe)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        } else
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+
         // Check and call events and swap the buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
-    }
+        }
 
-    // Clean-up
+        // Clean-up
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 
