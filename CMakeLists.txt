@@ -7,6 +7,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./out)
 # glfw
 add_subdirectory(libs/glfw)
 
+# assimp
+add_subdirectory(libs/assimp)
+
 include_directories(include/
                     libs/glad/include
                     libs/glfw/include
