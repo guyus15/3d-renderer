@@ -1,23 +1,27 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include "glad/glad.h"
+
 #include <string>
 
 class Texture
 {
  public:
-    explicit Texture(const std::string& texture_path);
+    Texture();
     ~Texture() = default;
 
-    void bind();
+    void enable_alpha(bool enable);
+    void generate(int width, int height, unsigned char *data);
+    void bind() const;
 
  private:
-    unsigned int _texture_id;
-    unsigned int _width, _height;
-    unsigned int _internal_format;
-    unsigned int _image_format;
-    unsigned int _wrap_s, _wrap_t;
-    unsigned int _filter_min, _filter_max;
+    GLuint _texture_id{};
+    GLint _internal_format;
+    GLint _image_format;
+    GLint _wrap_s, _wrap_t;
+    GLint _filter_min, _filter_mag;
+    GLsizei _width{}, _height{};
 };
 
 #endif
