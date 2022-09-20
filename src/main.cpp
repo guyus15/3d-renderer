@@ -6,7 +6,6 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -126,63 +125,23 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(sizeof(float) * 3));
     glEnableVertexAttribArray(1);
 
-    float texture_coords[] = {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        0.5f, 1.0f
-    };
-
-    unsigned int textures[2];
-    glGenTextures(2, textures);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textures[0]);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, textures[1]);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    const char *texture1 = "resources/textures/container.jpg";
-    const char *texture2 = "resources/textures/awesomeface.png";
-
-    int width, height, nr_channels;
+    const char *texture_src1 = "resources/textures/container.jpg";
+    const char *texture_src2 = "resources/textures/awesomeface.png";
 
     stbi_set_flip_vertically_on_load(true);
 
-    unsigned char *data = stbi_load(texture1, &width, &height, &nr_channels, 0);
+    Texture texture1 = ResourceManager::load_texture("texture1", texture_src1, false);
+    Texture texture2 = ResourceManager::load_texture("texture2", texture_src2, true);
 
-    if (data)
-    {
-        glBindTexture(GL_TEXTURE_2D, textures[0]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else
-    {
-        std::cerr << "Error: Failed to load texture " << texture1 << "." << std::endl;
-    }
+    glActiveTexture(GL_TEXTURE0);
+    texture1.bind();
 
-    data = stbi_load(texture2, &width, &height, &nr_channels, 0);
+    glActiveTexture(GL_TEXTURE1);
+    texture2.bind();
 
-    if (data)
-    {
-        glBindTexture(GL_TEXTURE_2D, textures[1]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else
-    {
-        std::cerr << "Error: Failed to load texture " << texture2 << "." << std::endl;
-    }
-
-    stbi_image_free(data);
-
-    ResourceManager resource_manager;
-    Shader shader = resource_manager.load_shader("shader1",
+    Shader shader = ResourceManager::load_shader("shader1",
                                 "resources/shaders/vs.shader",
                                 "resources/shaders/fs.shader");
-
     shader.use();
 
     shader.set_int("texture1", 0);
@@ -200,7 +159,7 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-        static float target[3], pitch = 0.0f, yaw = 0.0f, radius = 3.0f;
+        static float target[3], pitch = 0.1f, yaw = 0.0f, radius = 3.0f;
         static bool wireframe, orthographic;
 
         // Input
@@ -247,7 +206,7 @@ int main()
         ImGui::InputFloat3("Target", target);
 
         ImGui::SliderFloat("Yaw", &yaw, 0.0f, 360.0f);
-        ImGui::SliderFloat("Pitch", &pitch, -89.9f, 89.9f);
+        ImGui::SliderFloat("Pitch", &pitch, 0.1f, 179.9f);
         ImGui::SliderFloat("Radius", &radius, 1.0f, 10.0f);
 
         ImGui::Checkbox("Orthographic", &orthographic);
