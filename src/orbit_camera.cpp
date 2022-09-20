@@ -15,14 +15,14 @@ void OrbitCamera::set_pitch(float pitch)
 {
     _pitch = pitch;
 
-    // Clamp pitch to 90 degrees positive and negative.
-    if (_pitch > 89.9f)
+    // Clamp pitch to between 0 and 180.
+    if (_pitch > 179.9f)
     {
-        _pitch = 89.9f;
+        _pitch = 179.9f;
     }
-    else if (_pitch < -89.9f)
+    else if (_pitch < 0.0f)
     {
-        _pitch = -89.9f;
+        _pitch = 0.0f;
     }
 }
 
@@ -38,15 +38,19 @@ void OrbitCamera::set_radius(float radius)
 
 glm::mat4 OrbitCamera::get_view_matrix()
 {
-    // For now, we will ignore pitch movement.
+    // Using spherical coordinates.
 
     glm::vec3 world_up = glm::vec3{0.0f, 1.0f, 0.0f};
 
     glm::mat4 view = glm::lookAt
         (
-        glm::vec3{sin(glm::radians(_yaw)) * _radius, 0.0f, cos(glm::radians(_yaw)) * _radius},
-        _target,
-        world_up
+            glm::vec3{
+                cos(glm::radians(_yaw)) * sin(glm::radians(_pitch)) * _radius,
+                cos(glm::radians(_pitch)) * _radius,
+                sin(glm::radians(_yaw)) * sin(glm::radians(_pitch)) * _radius
+            },
+            _target,
+            world_up
         );
 
     return view;
