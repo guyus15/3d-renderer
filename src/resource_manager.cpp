@@ -1,13 +1,15 @@
 #include "resource_manager.h"
 
+#include "stb/stb_image.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-static Shader load_shader_from_file(const char *vertex_shader_path,
-                                    const char *fragment_shader_path);
+std::unordered_map<std::string, Shader> ResourceManager::_shaders;
+std::unordered_map<std::string, Texture> ResourceManager::_textures;
 
-Shader ResourceManager::load_shader(std::string name,
+Shader ResourceManager::load_shader(const std::string& name,
                                     const char *vertex_shader_path,
                                     const char *fragment_shader_path)
 {
@@ -15,12 +17,22 @@ Shader ResourceManager::load_shader(std::string name,
     return _shaders[name];
 }
 
-Shader ResourceManager::get_shader(std::string name)
+Shader ResourceManager::get_shader(const std::string& name)
 {
     return _shaders[name];
 }
 
-static Shader load_shader_from_file(const char *vertex_shader_path,
+Texture ResourceManager::load_texture(const std::string& name, const char *file_path, bool alpha)
+{
+    _textures[name] = load_texture_from_file(file_path, alpha);
+    return _textures[name];
+}
+Texture ResourceManager::get_texture(const std::string& name)
+{
+    return _textures[name];
+}
+
+Shader ResourceManager::load_shader_from_file(const char *vertex_shader_path,
                                     const char *fragment_shader_path)
 {
     std::string vertex_code, fragment_code;
@@ -54,4 +66,22 @@ static Shader load_shader_from_file(const char *vertex_shader_path,
     shader.compile(vertex_code, fragment_code);
 
     return shader;
+}
+Texture ResourceManager::load_texture_from_file(const char* file, bool alpha)
+{
+    Texture texture;
+
+    if (alpha)
+    {
+        texture.enable_alpha(true);
+    }
+
+    int width, height, no_channels;
+    unsigned char *data = stbi_load(file, &width, &height, &no_channels, 0);
+
+    texture.generate(width, height, data);
+
+    stbi_image_free(data);
+
+    return texture;
 }
