@@ -19,7 +19,7 @@ include_directories(include/
 
 set(SOURCE_FILES src/main.cpp
                  src/shader.cpp
-                 src/texture.cpp
+                 src/texture2d.cpp
                  src/resource_manager.cpp
                  src/orbit_camera.cpp
                  libs/glad/src/glad.c

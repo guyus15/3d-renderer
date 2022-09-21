@@ -1,10 +1,10 @@
-#include "texture.h"
+#include "texture2d.h"
 
 #include "glad/glad.h"
 
 #include <iostream>
 
-Texture::Texture()
+Texture2D::Texture2D()
 {
     _internal_format = GL_RGB;
     _image_format = GL_RGB;
@@ -13,7 +13,7 @@ Texture::Texture()
     _filter_min = GL_LINEAR;
     _filter_mag = GL_LINEAR;
 }
-void Texture::enable_alpha(bool enable)
+void Texture2D::enable_alpha(bool enable)
 {
     if (enable)
     {
@@ -25,7 +25,7 @@ void Texture::enable_alpha(bool enable)
         _image_format = GL_RGB;
     }
 }
-void Texture::generate(int width, int height, unsigned char *data)
+void Texture2D::generate(int width, int height, unsigned char *data)
 {
     glGenTextures(1, &_texture_id);
     glBindTexture(GL_TEXTURE_2D, _texture_id);
@@ -52,7 +52,7 @@ void Texture::generate(int width, int height, unsigned char *data)
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }
-void Texture::bind() const
+void Texture2D::bind() const
 {
     glBindTexture(GL_TEXTURE_2D, _texture_id);
 }

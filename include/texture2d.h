@@ -1,15 +1,15 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef TEXTURE_2D_H
+#define TEXTURE_2D_H
 
 #include "glad/glad.h"
 
 #include <string>
 
-class Texture
+class Texture2D
 {
  public:
-    Texture();
-    ~Texture() = default;
+    Texture2D();
+    ~Texture2D() = default;
 
     void enable_alpha(bool enable);
     void generate(int width, int height, unsigned char *data);

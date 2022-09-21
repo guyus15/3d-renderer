@@ -130,8 +130,8 @@ int main()
 
     stbi_set_flip_vertically_on_load(true);
 
-    Texture texture1 = ResourceManager::load_texture("texture1", texture_src1, false);
-    Texture texture2 = ResourceManager::load_texture("texture2", texture_src2, true);
+    Texture2D texture1 = ResourceManager::load_texture("texture1", texture_src1, false);
+    Texture2D texture2 = ResourceManager::load_texture("texture2", texture_src2, true);
 
     glActiveTexture(GL_TEXTURE0);
     texture1.bind();

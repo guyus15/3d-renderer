@@ -7,7 +7,7 @@
 #include <sstream>
 
 std::unordered_map<std::string, Shader> ResourceManager::_shaders;
-std::unordered_map<std::string, Texture> ResourceManager::_textures;
+std::unordered_map<std::string, Texture2D> ResourceManager::_textures;
 
 Shader ResourceManager::load_shader(const std::string& name,
                                     const char *vertex_shader_path,
@@ -22,12 +22,12 @@ Shader ResourceManager::get_shader(const std::string& name)
     return _shaders[name];
 }
 
-Texture ResourceManager::load_texture(const std::string& name, const char *file_path, bool alpha)
+Texture2D ResourceManager::load_texture(const std::string& name, const char *file_path, bool alpha)
 {
     _textures[name] = load_texture_from_file(file_path, alpha);
     return _textures[name];
 }
-Texture ResourceManager::get_texture(const std::string& name)
+Texture2D ResourceManager::get_texture(const std::string& name)
 {
     return _textures[name];
 }
@@ -67,9 +67,9 @@ Shader ResourceManager::load_shader_from_file(const char *vertex_shader_path,
 
     return shader;
 }
-Texture ResourceManager::load_texture_from_file(const char* file, bool alpha)
+Texture2D ResourceManager::load_texture_from_file(const char* file, bool alpha)
 {
-    Texture texture;
+    Texture2D texture;
 
     if (alpha)
     {
