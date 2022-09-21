@@ -8,6 +8,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./out)
 add_subdirectory(libs/glfw)
 
 # assimp
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries")
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "Assimp build tests")
+set(ASSIMP_INSTALL OFF CACHE BOOL "Assimp install")
+set(ASSIMP_INSTALL_PDB OFF CACHE BOOL "Assimp install PDB")
+
 add_subdirectory(libs/assimp)
 
 include_directories(include/
