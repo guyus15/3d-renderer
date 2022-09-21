@@ -5,13 +5,17 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./out)
 
 # glfw
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "GLFW build documentation" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "GLFW build documentation" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "GLFW build documentation" FORCE)
+
 add_subdirectory(libs/glfw)
 
 # assimp
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries")
-set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "Assimp build tests")
-set(ASSIMP_INSTALL OFF CACHE BOOL "Assimp install")
-set(ASSIMP_INSTALL_PDB OFF CACHE BOOL "Assimp install PDB")
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries" FORCE)
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "Assimp build tests" FORCE)
+set(ASSIMP_INSTALL OFF CACHE BOOL "Assimp install" FORCE)
+set(ASSIMP_INSTALL_PDB OFF CACHE BOOL "Assimp install PDB" FORCE)
 
 add_subdirectory(libs/assimp)
 
