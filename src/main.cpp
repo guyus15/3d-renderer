@@ -11,9 +11,6 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb/stb_image.h"
-
 #include <cstdlib>
 #include <iostream>
 
@@ -128,10 +125,8 @@ int main()
     const char *texture_src1 = "resources/textures/container.jpg";
     const char *texture_src2 = "resources/textures/awesomeface.png";
 
-    stbi_set_flip_vertically_on_load(true);
-
     Texture2D texture1 = ResourceManager::load_texture("texture1", texture_src1, false);
-    Texture2D texture2 = ResourceManager::load_texture("texture2", texture_src2, true);
+    Texture2D texture2 = ResourceManager::load_texture("texture2", texture_src2, true, true);
 
     glActiveTexture(GL_TEXTURE0);
     texture1.bind();

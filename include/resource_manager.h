@@ -18,7 +18,8 @@ class ResourceManager
 
     static Texture2D load_texture(const std::string& name,
                          const char *file_path,
-                         bool alpha);
+                         bool alpha,
+                         bool flip_on_load = false);
 
     static Texture2D get_texture(const std::string& name);
 
@@ -29,7 +30,7 @@ class ResourceManager
     static Shader load_shader_from_file(const char *vertex_shader_path,
                                  const char *fragment_shader_path);
 
-    static Texture2D load_texture_from_file(const char *file, bool alpha);
+    static Texture2D load_texture_from_file(const char *file, bool alpha, bool flip_on_load);
 
     static std::unordered_map<std::string, Shader> _shaders;
     static std::unordered_map<std::string, Texture2D> _textures;

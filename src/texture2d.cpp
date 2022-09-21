@@ -25,6 +25,7 @@ void Texture2D::enable_alpha(bool enable)
         _image_format = GL_RGB;
     }
 }
+
 void Texture2D::generate(int width, int height, unsigned char *data)
 {
     glGenTextures(1, &_texture_id);

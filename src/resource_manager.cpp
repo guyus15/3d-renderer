@@ -1,5 +1,6 @@
 #include "resource_manager.h"
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
 
 #include <fstream>
@@ -22,9 +23,9 @@ Shader ResourceManager::get_shader(const std::string& name)
     return _shaders[name];
 }
 
-Texture2D ResourceManager::load_texture(const std::string& name, const char *file_path, bool alpha)
+Texture2D ResourceManager::load_texture(const std::string& name, const char *file_path, bool alpha, bool flip_on_load)
 {
-    _textures[name] = load_texture_from_file(file_path, alpha);
+    _textures[name] = load_texture_from_file(file_path, alpha, flip_on_load);
     return _textures[name];
 }
 Texture2D ResourceManager::get_texture(const std::string& name)
@@ -67,7 +68,7 @@ Shader ResourceManager::load_shader_from_file(const char *vertex_shader_path,
 
     return shader;
 }
-Texture2D ResourceManager::load_texture_from_file(const char* file, bool alpha)
+Texture2D ResourceManager::load_texture_from_file(const char* file, bool alpha, bool flip_on_load)
 {
     Texture2D texture;
 
@@ -76,12 +77,20 @@ Texture2D ResourceManager::load_texture_from_file(const char* file, bool alpha)
         texture.enable_alpha(true);
     }
 
+    if (flip_on_load)
+    {
+        stbi_set_flip_vertically_on_load(flip_on_load);
+    }
+
     int width, height, no_channels;
     unsigned char *data = stbi_load(file, &width, &height, &no_channels, 0);
 
     texture.generate(width, height, data);
 
     stbi_image_free(data);
+
+    // Disable flipping vertically on load after texture has been loaded.
+    stbi_set_flip_vertically_on_load(false);
 
     return texture;
 }
