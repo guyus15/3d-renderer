@@ -15,6 +15,8 @@ class OrbitCamera
     void set_yaw(float yaw);
     void set_radius(float radius);
 
+    glm::vec3 get_camera_pos() const;
+
     glm::mat4 get_view_matrix();
 
  private:

@@ -36,6 +36,18 @@ void OrbitCamera::set_radius(float radius)
     _radius = radius;
 }
 
+glm::vec3 OrbitCamera::get_camera_pos() const
+{
+    glm::vec3 camera_pos
+        {
+            cos(glm::radians(_yaw)) * sin(glm::radians(_pitch)) * _radius,
+            cos(glm::radians(_pitch)) * _radius,
+            sin(glm::radians(_yaw)) * sin(glm::radians(_pitch)) * _radius
+        };
+
+    return camera_pos;
+}
+
 glm::mat4 OrbitCamera::get_view_matrix()
 {
     // Using spherical coordinates.
@@ -44,15 +56,10 @@ glm::mat4 OrbitCamera::get_view_matrix()
 
     glm::mat4 view = glm::lookAt
         (
-            glm::vec3{
-                cos(glm::radians(_yaw)) * sin(glm::radians(_pitch)) * _radius,
-                cos(glm::radians(_pitch)) * _radius,
-                sin(glm::radians(_yaw)) * sin(glm::radians(_pitch)) * _radius
-            },
+            get_camera_pos(),
             _target,
             world_up
         );
 
     return view;
 }
-

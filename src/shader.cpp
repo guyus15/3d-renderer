@@ -55,7 +55,7 @@ void Shader::compile(const std::string& vertex_shader_code, const std::string& f
     glDeleteShader(fragment_shader);
 }
 
-void Shader::use()
+void Shader::use() const
 {
     glUseProgram(_program_id);
 }
@@ -73,6 +73,16 @@ void Shader::set_int(const std::string& name, int value) const
 void Shader::set_float(const std::string& name, float value) const
 {
     glUniform1f(glGetUniformLocation(_program_id, name.c_str()), value);
+}
+
+void Shader::set_vec3(const std::string& name, float value1, float value2, float value3) const
+{
+    glUniform3f(glGetUniformLocation(_program_id, name.c_str()), value1, value2, value3);
+}
+
+void Shader::set_vec3(const std::string& name, glm::vec3& vec3) const
+{
+    glUniform3f(glGetUniformLocation(_program_id, name.c_str()), vec3.x, vec3.y, vec3.z);
 }
 
 void Shader::set_mat4(const std::string& name, glm::mat4& value) const
