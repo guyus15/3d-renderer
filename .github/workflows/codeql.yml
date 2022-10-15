@@ -46,8 +46,11 @@ jobs:
     - name: Install libxcursor development package
       run: sudo apt-get install libxcursor-dev
     
-    - name: Install libXi development package
+    - name: Install libxi development package
       run: sudo apt-get install libxi-dev
+    
+    - name: Install libmesa development package
+      run: sudo apt-get install libmesa-dev
     
     - name: Checkout repository
       uses: actions/checkout@v3
