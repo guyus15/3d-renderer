@@ -43,6 +43,9 @@ jobs:
     - name: Install libxinerama development package
       run: sudo apt-get install libxinerama-dev
     
+    - name: Install libxcursor development package
+      run: sudo apt-get install libxcursor-dev
+    
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
