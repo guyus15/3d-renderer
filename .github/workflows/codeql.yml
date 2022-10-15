@@ -50,7 +50,7 @@ jobs:
       run: sudo apt-get install libxi-dev
     
     - name: Install libmesa development package
-      run: sudo apt-get install libmesa-dev
+      run: sudo apt-get install mesa-common-dev
     
     - name: Checkout repository
       uses: actions/checkout@v3
