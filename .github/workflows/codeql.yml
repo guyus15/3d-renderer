@@ -38,7 +38,7 @@ jobs:
 
     steps:
     - name: Install libxrandr development package
-      run: sudo apt-get install libxrandr
+      run: sudo apt-get install libxrandr-dev
     
     - name: Checkout repository
       uses: actions/checkout@v3
