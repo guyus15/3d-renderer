@@ -151,7 +151,7 @@ int main()
     {
         static float pitch = 90.0f, yaw = 0.0f, radius = 3.0f;
         static float light_pos[3] = {4.0f, 0.0f, 0.0f};
-        static bool wireframe, orthographic, auto_light_movement;
+        static bool wireframe = false, orthographic = false, auto_light_movement = false;
 
         model = glm::mat4{1.0f};
 
