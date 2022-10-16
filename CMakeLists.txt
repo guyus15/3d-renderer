@@ -24,7 +24,9 @@ include_directories(include/
                     libs/glfw/include
                     libs/glm
                     libs/imgui
-                    libs/imgui/backends)
+                    libs/imgui/backends
+                    libs/assimp/include
+                    ${CMAKE_CURRENT_BINARY_DIR}/libs/assimp/include)
 
 set(SOURCE_FILES src/main.cpp
                  src/shader.cpp
@@ -43,6 +45,7 @@ set(SOURCE_FILES src/main.cpp
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} assimp)
 
 add_custom_target(copy_resources ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
