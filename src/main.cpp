@@ -1,5 +1,6 @@
 #include "resource_manager.h"
 #include "orbit_camera.h"
+#include "model.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -137,6 +138,10 @@ int main()
                                                             "resources/shaders/cube.vs",
                                                             "resources/shaders/cube.fs");
 
+    Shader our_shader = ResourceManager::load_shader("model_loading_shader", "resources/shaders/model_loading.vs", "resources/shaders/model_loading.fs");
+
+    Model model_obj{ "resources/models/backpack/backpack.obj" };
+
     glEnable(GL_DEPTH_TEST);
 
     glm::mat4 model{1.0f};
@@ -175,7 +180,7 @@ int main()
         }
 
         // Cube
-
+        /*
         lighting_shader.use();
         lighting_shader.set_vec3("objectColor", 1.0f, 0.5f, 0.31f);
         lighting_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
@@ -204,7 +209,16 @@ int main()
 
         glBindVertexArray(light_cube_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+        */
 
+        our_shader.use();
+        our_shader.set_mat4("projection", projection);
+        our_shader.set_mat4("view", view);
+
+        model = glm::mat4{ 1.0f };
+        our_shader.set_mat4("model", model);
+
+        model_obj.draw(our_shader);
 
         // Transformations
 

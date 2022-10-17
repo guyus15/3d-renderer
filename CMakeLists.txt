@@ -33,6 +33,8 @@ set(SOURCE_FILES src/main.cpp
                  src/texture2d.cpp
                  src/resource_manager.cpp
                  src/orbit_camera.cpp
+                 src/mesh.cpp
+                 src/model.cpp
                  libs/glad/src/glad.c
                  libs/imgui/imgui.cpp
                  libs/imgui/imgui_demo.cpp
