@@ -12,7 +12,10 @@ jobs:
     env:
       CFLAGS: /WX
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+            submodules: 'recursive'
       
       - name: Configure project
         run: cmake -S . -B build -G "Visual Studio 17 2022"
