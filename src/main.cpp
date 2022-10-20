@@ -1,6 +1,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
+#include "gui.h"
 #include "input_manager.h"
 #include "model.h"
 #include "orbit_camera.h"
@@ -16,6 +17,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include <memory>
 
 #define SCREEN_WIDTH  1024
 #define SCREEN_HEIGHT 576
@@ -86,7 +88,7 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         static float pitch = 90.0f, yaw = 0.0f, yaw_step = 10.0f, radius = 3.0f;
-        static float light_pos[3] = { 4.0f, 0.0f, 0.0f };
+        static WorldPosition light_pos { 4.0f, 0.0f, 0.0f };
         static bool wireframe = false, orthographic = false, auto_light_movement = false;
 
         // Input
@@ -110,8 +112,8 @@ int main()
 
         if (auto_light_movement)
         {
-            light_pos[0] = sin(glm::radians((float)glfwGetTime() * 5.0f)) * 5.0f;
-            light_pos[2] = cos(glm::radians((float)glfwGetTime() * 5.0f)) * 5.0f;
+            light_pos.x = sin(glm::radians((float)glfwGetTime() * 5.0f)) * 5.0f;
+            light_pos.z = cos(glm::radians((float)glfwGetTime() * 5.0f)) * 5.0f;
         }
 
         our_shader.use();
@@ -138,36 +140,23 @@ int main()
             projection = glm::perspective(45.0f, aspect_ratio, 0.1f, 100.0f);
         }
 
-        // Dear ImGui
+        // -- UI --
+        std::unique_ptr<CameraControlsUI> camera_ui = std::make_unique<CameraControlsUI>(yaw, pitch, radius, orthographic);
+        std::unique_ptr<LightingControlsUI> lighting_ui = std::make_unique<LightingControlsUI>(light_pos, auto_light_movement);
+        std::unique_ptr<RenderOptionsUI> render_ui =  std::make_unique<RenderOptionsUI>(wireframe);
+
+        std::vector<IGui*> gui_items{ camera_ui.get(), lighting_ui.get(), render_ui.get() };
+
+        // Dear ImGui - initialising new frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
-        // Camera controls
-        ImGui::Begin("Camera Controls");
-
-        ImGui::SliderFloat("Yaw", &yaw, 0.0f, 360.0f);
-        ImGui::SliderFloat("Pitch", &pitch, 0.1f, 179.9f);
-        ImGui::SliderFloat("Radius", &radius, 1.0f, 10.0f);
-
-        ImGui::Checkbox("Orthographic", &orthographic);
-
-        ImGui::End();
-
-        // Lighting controls
-        ImGui::Begin("Lighting Controls");
-
-        ImGui::InputFloat3("Light Position", light_pos);
-        ImGui::Checkbox("Auto-Movement", &auto_light_movement);
-
-        ImGui::End();
-
-        // Rendering options
-        ImGui::Begin("Rendering Options");
-
-        ImGui::Checkbox("Wireframe Mode", &wireframe);
-
-        ImGui::End();
+         
+        // Render each IGui
+        for (const auto& ui : gui_items)
+        {
+            ui->render();
+        }
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

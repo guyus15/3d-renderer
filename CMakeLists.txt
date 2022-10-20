@@ -35,6 +35,8 @@ set(SOURCE_FILES src/main.cpp
                  src/orbit_camera.cpp
                  src/mesh.cpp
                  src/model.cpp
+                 src/input_manager.cpp
+                 src/gui.cpp
                  libs/glad/src/glad.c
                  libs/imgui/imgui.cpp
                  libs/imgui/imgui_demo.cpp
@@ -42,7 +44,7 @@ set(SOURCE_FILES src/main.cpp
                  libs/imgui/imgui_tables.cpp
                  libs/imgui/imgui_widgets.cpp
                  libs/imgui/backends/imgui_impl_glfw.cpp
-                 libs/imgui/backends/imgui_impl_opengl3.cpp "src/input_manager.cpp")
+                 libs/imgui/backends/imgui_impl_opengl3.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
