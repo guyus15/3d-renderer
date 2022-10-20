@@ -3,6 +3,7 @@
 
 #include "shader.h"
 #include "texture2d.h"
+#include "model.h"
 
 #include <string>
 #include <unordered_map>
@@ -23,6 +24,11 @@ class ResourceManager
 
     static Texture2D get_texture(const std::string& name);
 
+    static Model load_model(const std::string& name,
+                            const std::string& file_path);
+
+    static Model get_model(const std::string& name);
+
  private:
     ResourceManager() = default;
     ~ResourceManager() = default;
@@ -32,8 +38,11 @@ class ResourceManager
 
     static Texture2D load_texture_from_file(const char *file, bool alpha, bool flip_on_load);
 
+    static Model load_model_from_file(const std::string& file);
+
     static std::unordered_map<std::string, Shader> _shaders;
     static std::unordered_map<std::string, Texture2D> _textures;
+    static std::unordered_map<std::string, Model> _models;
 };
 
 #endif

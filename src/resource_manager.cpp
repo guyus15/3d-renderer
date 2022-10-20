@@ -9,6 +9,7 @@
 
 std::unordered_map<std::string, Shader> ResourceManager::_shaders;
 std::unordered_map<std::string, Texture2D> ResourceManager::_textures;
+std::unordered_map<std::string, Model> ResourceManager::_models;
 
 Shader ResourceManager::load_shader(const std::string& name,
                                     const char *vertex_shader_path,
@@ -31,6 +32,17 @@ Texture2D ResourceManager::load_texture(const std::string& name, const char *fil
 Texture2D ResourceManager::get_texture(const std::string& name)
 {
     return _textures[name];
+}
+
+Model ResourceManager::load_model(const std::string& name, const std::string& file_path)
+{
+    _models[name] = load_model_from_file(file_path);
+    return _models[name];
+}
+
+Model ResourceManager::get_model(const std::string& name)
+{
+    return _models[name];
 }
 
 Shader ResourceManager::load_shader_from_file(const char *vertex_shader_path,
@@ -93,4 +105,10 @@ Texture2D ResourceManager::load_texture_from_file(const char* file, bool alpha, 
     stbi_set_flip_vertically_on_load(false);
 
     return texture;
+}
+
+Model ResourceManager::load_model_from_file(const std::string& file)
+{
+    Model model{ file };
+    return model;
 }

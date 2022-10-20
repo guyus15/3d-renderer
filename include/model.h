@@ -14,6 +14,7 @@
 class Model
 {
 public:
+	Model() = default;
 	Model(const std::string& path);
 	void draw(Shader& shader);
 

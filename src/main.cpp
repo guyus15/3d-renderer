@@ -73,7 +73,7 @@ int main()
     ImGui_ImplOpenGL3_Init("#version 460");
 
     Shader our_shader = ResourceManager::load_shader("model_loading_shader", "resources/shaders/model_loading.vs", "resources/shaders/model_loading.fs");
-    Model model_obj{ "resources/models/backpack/backpack.obj" };
+    Model model_obj = ResourceManager::load_model("backpack_model", "resources/models/backpack/backpack.obj");
 
     glEnable(GL_DEPTH_TEST);
 
